@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Building {
+  id            Int            @id @default(autoincrement())
+  name          String
+  address       String
+  roadStatus    String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  analysisScore AnalysisScore?
+  buildingInfo  BuildingInfo?
+  floorInfo     FloorInfo[]
+  landInfo      LandInfo?
+  leases        Lease[]
+  priceInfo     PriceInfo?
+
+  @@map("buildings")
+}
+
+model LandInfo {
+  id                 Int      @id @default(autoincrement())
+  buildingId         Int      @unique
+  areaSqm            Float
+  areaPyeong         Float
+  zoning             String
+  landPricePerPyeong Float
+  landPriceTotal     Float
+  landCategory       String?
+  building           Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  @@map("land_info")
+}
+
+model BuildingInfo {
+  id                    Int       @id @default(autoincrement())
+  buildingId            Int       @unique
+  totalAreaSqm          Float
+  totalAreaPyeong       Float
+  buildingAreaSqm       Float
+  buildingAreaPyeong    Float
+  buildingCoverageRatio Float
+  floorAreaRatio        Float
+  floors                String
+  basementFloors        Int
+  aboveGroundFloors     Int
+  parkingSpaces         Int
+  completionDate        DateTime?
+  hasElevator           Boolean   @default(false)
+  structure             String?
+  mainUsage             String?
+  building              Building  @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  @@map("building_info")
+}
+
+model PriceInfo {
+  id                  Int      @id @default(autoincrement())
+  buildingId          Int      @unique
+  salePrice           Float
+  deposit             Float
+  monthlyRent         Float
+  yield               Float
+  pricePerPyeong      Float
+  aiEstimate          Float?
+  aiEstimatePerPyeong Float?
+  building            Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  @@map("price_info")
+}
+
+model FloorInfo {
+  id         Int      @id @default(autoincrement())
+  buildingId Int
+  floor      String
+  areaSqm    Float
+  areaPyeong Float
+  usage      String
+  structure  String?
+  building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  @@index([buildingId], map: "floor_info_buildingId_fkey")
+  @@map("floor_info")
+}
+
+model Lease {
+  id            Int      @id @default(autoincrement())
+  buildingId    Int
+  floor         String
+  tenant        String
+  areaSqm       Float
+  areaPyeong    Float
+  deposit       Float
+  monthlyRent   Float
+  managementFee Float?
+  notes         String?
+  building      Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  @@index([buildingId], map: "leases_buildingId_fkey")
+  @@map("leases")
+}
+
+model AnalysisScore {
+  id                     Int      @id @default(autoincrement())
+  buildingId             Int      @unique
+  accessibilityScore     Float?
+  transportScore         Float?
+  developmentPlanScore   Float?
+  buildingSizeScore      Float?
+  structureScore         Float?
+  buildingAgeScore       Float?
+  maintenanceScore       Float?
+  illegalBuildingScore   Float?
+  harmfulFacilityScore   Float?
+  constructionLimitScore Float?
+  salesComparisonScore   Float?
+  marketPriceScore       Float?
+  aiEstimateScore        Float?
+  landPriceGrowthScore   Float?
+  rentalStabilityScore   Float?
+  operatingCostScore     Float?
+  taxScore               Float?
+  yieldScore             Float?
+  vacancyScore           Float?
+  usageChangeScore       Float?
+  newConstructionScore   Float?
+  remodelingScore        Float?
+  additionalInvestScore  Float?
+  profitabilityScore     Float?
+  vacatingScore          Float?
+  totalScore             Float?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  building               Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  @@map("analysis_scores")
+}
