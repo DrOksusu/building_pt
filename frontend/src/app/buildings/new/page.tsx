@@ -76,6 +76,9 @@ export default function NewBuildingPage() {
     vacatingScore: null,
   });
 
+  // 분석 점수 이유 (AI 설명)
+  const [analysisNotes, setAnalysisNotes] = useState<Record<string, string>>({});
+
   const scoreLabels: Record<string, { label: string; category: string }> = {
     accessibilityScore: { label: '접근성', category: '입지 분석' },
     transportScore: { label: '교통', category: '입지 분석' },
@@ -164,10 +167,15 @@ export default function NewBuildingPage() {
 
       // AI 분석 점수 저장
       if (data.analysisScore) {
+        const { analysisNotes: notes, ...scores } = data.analysisScore;
         setAnalysisScores(prev => ({
           ...prev,
-          ...data.analysisScore,
+          ...scores,
         }));
+        // 분석 이유 저장
+        if (notes && typeof notes === 'object') {
+          setAnalysisNotes(notes);
+        }
       }
 
       alert('PDF 정보가 입력되었습니다. 내용을 확인해주세요.');
@@ -230,9 +238,11 @@ export default function NewBuildingPage() {
       // 분석 점수가 하나라도 있으면 포함
       const nonNullScores = Object.entries(analysisScores).filter(([_, v]) => v !== null);
       if (nonNullScores.length > 0) {
-        (payload as any).analysisScore = Object.fromEntries(
-          nonNullScores.map(([k, v]) => [k, v])
-        );
+        (payload as any).analysisScore = {
+          ...Object.fromEntries(nonNullScores.map(([k, v]) => [k, v])),
+          // 분석 이유도 함께 저장
+          ...(Object.keys(analysisNotes).length > 0 && { analysisNotes }),
+        };
       }
 
       await createBuilding(payload);
@@ -617,15 +627,27 @@ export default function NewBuildingPage() {
                     {Object.entries(scoreLabels)
                       .filter(([_, info]) => info.category === category)
                       .map(([key, info]) => (
-                        <div key={key} className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                        <div key={key} className="relative group flex items-center justify-between bg-gray-50 rounded-lg p-3">
                           <div className="flex-1">
-                            <span className="text-sm font-medium text-gray-700">{info.label}</span>
+                            <div className="flex items-center gap-1">
+                              <span className="text-sm font-medium text-gray-700">{info.label}</span>
+                              {analysisNotes[key] && (
+                                <span className="text-amber-500 cursor-help" title={analysisNotes[key]}>
+                                  ℹ️
+                                </span>
+                              )}
+                            </div>
                             {analysisScores[key] === null && (
                               <p className="text-xs text-orange-500 mt-1">
                                 주어진 자료로는 알기가 어렵습니다
                               </p>
                             )}
-                            {analysisScores[key] !== null && (
+                            {analysisScores[key] !== null && analysisNotes[key] && (
+                              <p className="text-xs text-green-600 mt-1 truncate max-w-[180px]" title={analysisNotes[key]}>
+                                {analysisNotes[key]}
+                              </p>
+                            )}
+                            {analysisScores[key] !== null && !analysisNotes[key] && (
                               <p className="text-xs text-green-600 mt-1">
                                 AI 추천 점수
                               </p>
@@ -650,6 +672,16 @@ export default function NewBuildingPage() {
                               </button>
                             ))}
                           </div>
+                          {/* 툴팁 */}
+                          {analysisNotes[key] && (
+                            <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block z-10">
+                              <div className="bg-gray-800 text-white text-xs rounded-lg py-2 px-3 max-w-[250px] shadow-lg">
+                                <p className="font-semibold mb-1">{info.label}: {analysisScores[key]}점</p>
+                                <p>{analysisNotes[key]}</p>
+                              </div>
+                              <div className="absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800" />
+                            </div>
+                          )}
                         </div>
                       ))}
                   </div>

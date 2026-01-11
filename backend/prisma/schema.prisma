@@ -135,6 +135,7 @@ model AnalysisScore {
   profitabilityScore     Float?
   vacatingScore          Float?
   totalScore             Float?
+  analysisNotes          Json?    // 각 점수별 AI 분석 이유
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
   building               Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)

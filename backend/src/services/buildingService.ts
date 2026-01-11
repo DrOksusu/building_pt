@@ -31,14 +31,19 @@ const VALID_SCORE_FIELDS = [
   'vacatingScore',
 ];
 
-// 유효한 점수 필드만 추출하는 함수 (analysisNotes 등 제외)
-function extractValidScores(scores: any): Partial<AnalysisScoreInput> {
+// 유효한 점수 필드와 analysisNotes를 추출하는 함수
+function extractValidScores(scores: any): Partial<AnalysisScoreInput> & { analysisNotes?: any } {
   const result: any = {};
 
   for (const key of VALID_SCORE_FIELDS) {
     if (scores[key] !== undefined && scores[key] !== null) {
       result[key] = scores[key];
     }
+  }
+
+  // analysisNotes도 함께 추출 (JSON 필드)
+  if (scores.analysisNotes && typeof scores.analysisNotes === 'object') {
+    result.analysisNotes = scores.analysisNotes;
   }
 
   return result;

@@ -227,6 +227,8 @@ PDF에서 정보를 추출하고, 투자 관점에서 각 항목별 점수(1-5�
    - 비고
 
 6. 투자 분석 점수 (1-5점, PDF 정보로 판단 불가시 null):
+   각 점수에 대해 왜 그 점수를 부여했는지 간단한 이유(20자 내외)도 함께 analysisNotes에 작성해주세요.
+
    [입지 분석 - 15%]
    - accessibilityScore: 접근성 (대중교통, 도보 접근성)
    - transportScore: 교통 (지하철역 거리, 버스 노선)
@@ -337,7 +339,33 @@ PDF에서 정보를 추출하고, 투자 관점에서 각 항목별 점수(1-5�
     "additionalInvestScore": null,
     "profitabilityScore": null,
     "vacatingScore": null,
-    "analysisNotes": {}
+    "analysisNotes": {
+      "accessibilityScore": "점수 부여 이유",
+      "transportScore": "점수 부여 이유",
+      "developmentPlanScore": "점수 부여 이유",
+      "buildingSizeScore": "점수 부여 이유",
+      "structureScore": "점수 부여 이유",
+      "buildingAgeScore": "점수 부여 이유",
+      "maintenanceScore": "점수 부여 이유",
+      "illegalBuildingScore": "점수 부여 이유",
+      "harmfulFacilityScore": "점수 부여 이유",
+      "constructionLimitScore": "점수 부여 이유",
+      "salesComparisonScore": "점수 부여 이유",
+      "marketPriceScore": "점수 부여 이유",
+      "aiEstimateScore": "점수 부여 이유",
+      "landPriceGrowthScore": "점수 부여 이유",
+      "rentalStabilityScore": "점수 부여 이유",
+      "operatingCostScore": "점수 부여 이유",
+      "taxScore": "점수 부여 이유",
+      "yieldScore": "점수 부여 이유",
+      "vacancyScore": "점수 부여 이유",
+      "usageChangeScore": "점수 부여 이유",
+      "newConstructionScore": "점수 부여 이유",
+      "remodelingScore": "점수 부여 이유",
+      "additionalInvestScore": "점수 부여 이유",
+      "profitabilityScore": "점수 부여 이유",
+      "vacatingScore": "점수 부여 이유"
+    }
   }
 }`;
 

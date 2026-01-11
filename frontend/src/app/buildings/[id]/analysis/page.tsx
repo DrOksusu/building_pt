@@ -101,6 +101,7 @@ export default function AnalysisScorePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [scores, setScores] = useState<Record<string, number>>({});
+  const [analysisNotes, setAnalysisNotes] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (params.id) {
@@ -122,6 +123,11 @@ export default function AnalysisScorePage() {
           });
         });
         setScores(existingScores);
+
+        // AI 분석 이유 로드
+        if ((data.analysisScore as any).analysisNotes) {
+          setAnalysisNotes((data.analysisScore as any).analysisNotes);
+        }
       } else {
         const defaultScores: Record<string, number> = {};
         SCORE_CATEGORIES.forEach(cat => {
@@ -215,8 +221,20 @@ export default function AnalysisScorePage() {
                 {category.fields.map((field) => (
                   <div key={field.key} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <div className="sm:w-1/3">
-                      <label className="font-medium text-gray-700">{field.label}</label>
+                      <div className="flex items-center gap-1">
+                        <label className="font-medium text-gray-700">{field.label}</label>
+                        {analysisNotes[field.key] && (
+                          <span className="text-amber-500 cursor-help" title={analysisNotes[field.key]}>
+                            ℹ️
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-500">{field.description}</p>
+                      {analysisNotes[field.key] && (
+                        <p className="text-xs text-green-600 mt-1 italic">
+                          AI: {analysisNotes[field.key]}
+                        </p>
+                      )}
                     </div>
                     <div className="sm:w-2/3 flex items-center gap-3">
                       <input
