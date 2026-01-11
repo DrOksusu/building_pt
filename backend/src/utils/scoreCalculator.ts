@@ -102,36 +102,35 @@ export function calculateTotalScore(scores: AnalysisScoreInput): number {
   return Math.round(totalScore * 100) / 100;
 }
 
-// 수익률 기반 점수 계산 (3.5% = 10점)
+// 수익률 기반 점수 계산 (3.5% = 5점, 5점 만점)
 export function calculateYieldScore(yieldRate: number): number {
-  if (yieldRate >= 3.5) return 10;
-  if (yieldRate >= 3.0) return 8;
-  if (yieldRate >= 2.5) return 6;
-  if (yieldRate >= 2.0) return 4;
-  return 2;
-}
-
-// AI 추정가 대비 점수 계산
-export function calculateAiEstimateScore(salePrice: number, aiEstimate: number): number {
-  if (aiEstimate >= salePrice) return 10;
-  
-  const diff = ((salePrice - aiEstimate) / salePrice) * 100;
-  
-  if (diff < 10) return 9;
-  if (diff < 20) return 7;
-  if (diff < 30) return 5;
-  if (diff < 40) return 3;
+  if (yieldRate >= 3.5) return 5;
+  if (yieldRate >= 3.0) return 4;
+  if (yieldRate >= 2.5) return 3;
+  if (yieldRate >= 2.0) return 2;
   return 1;
 }
 
-// 건물 연식 기반 점수 계산
+// AI 추정가 대비 점수 계산 (5점 만점)
+export function calculateAiEstimateScore(salePrice: number, aiEstimate: number): number {
+  if (aiEstimate >= salePrice) return 5;
+
+  const diff = ((salePrice - aiEstimate) / salePrice) * 100;
+
+  if (diff < 10) return 4;
+  if (diff < 20) return 3;
+  if (diff < 30) return 2;
+  return 1;
+}
+
+// 건물 연식 기반 점수 계산 (5점 만점)
 export function calculateBuildingAgeScore(completionYear: number): number {
   const currentYear = new Date().getFullYear();
   const age = currentYear - completionYear;
-  
-  if (age <= 5) return 10;  // 신축
-  if (age <= 10) return 9;  // 준신축
-  if (age <= 20) return 7;  // 중간 연식
-  if (age <= 30) return 5;  // 오래된 건물
-  return 3;  // 매우 오래된 건물
+
+  if (age <= 5) return 5;   // 신축
+  if (age <= 10) return 4;  // 준신축
+  if (age <= 20) return 3;  // 중간 연식
+  if (age <= 30) return 2;  // 오래된 건물
+  return 1;                  // 매우 오래된 건물
 }

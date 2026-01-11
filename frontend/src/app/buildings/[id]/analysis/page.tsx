@@ -119,7 +119,7 @@ export default function AnalysisScorePage() {
         const existingScores: Record<string, number> = {};
         SCORE_CATEGORIES.forEach(cat => {
           cat.fields.forEach(field => {
-            existingScores[field.key] = (data.analysisScore as any)[field.key] || 5;
+            existingScores[field.key] = (data.analysisScore as any)[field.key] || 3;
           });
         });
         setScores(existingScores);
@@ -132,7 +132,7 @@ export default function AnalysisScorePage() {
         const defaultScores: Record<string, number> = {};
         SCORE_CATEGORIES.forEach(cat => {
           cat.fields.forEach(field => {
-            defaultScores[field.key] = 5;
+            defaultScores[field.key] = 3;
           });
         });
         setScores(defaultScores);
@@ -201,11 +201,11 @@ export default function AnalysisScorePage() {
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
           <h3 className="font-bold text-amber-800 mb-2">점수 기준</h3>
           <ul className="text-sm text-amber-700 space-y-1">
-            <li>• <strong>10점</strong>: 최상 (매우 우수)</li>
-            <li>• <strong>8-9점</strong>: 우수</li>
-            <li>• <strong>6-7점</strong>: 평균</li>
-            <li>• <strong>4-5점</strong>: 미흡</li>
-            <li>• <strong>1-3점</strong>: 불량</li>
+            <li>• <strong>5점</strong>: 최상 (매우 우수)</li>
+            <li>• <strong>4점</strong>: 우수</li>
+            <li>• <strong>3점</strong>: 평균</li>
+            <li>• <strong>2점</strong>: 미흡</li>
+            <li>• <strong>1점</strong>: 불량</li>
           </ul>
         </div>
 
@@ -240,17 +240,17 @@ export default function AnalysisScorePage() {
                       <input
                         type="range"
                         min="1"
-                        max="10"
-                        value={scores[field.key] || 5}
+                        max="5"
+                        value={scores[field.key] || 3}
                         onChange={(e) => handleScoreChange(field.key, Number(e.target.value))}
                         className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
                       />
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white ${
-                        (scores[field.key] || 5) >= 8 ? 'bg-green-500' :
-                        (scores[field.key] || 5) >= 6 ? 'bg-yellow-500' :
-                        (scores[field.key] || 5) >= 4 ? 'bg-orange-500' : 'bg-red-500'
+                        (scores[field.key] || 3) >= 4 ? 'bg-green-500' :
+                        (scores[field.key] || 3) >= 3 ? 'bg-yellow-500' :
+                        (scores[field.key] || 3) >= 2 ? 'bg-orange-500' : 'bg-red-500'
                       }`}>
-                        {scores[field.key] || 5}
+                        {scores[field.key] || 3}
                       </div>
                     </div>
                   </div>

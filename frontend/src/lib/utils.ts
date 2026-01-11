@@ -24,29 +24,29 @@ export function formatPercent(value: number): string {
   return `${value.toFixed(2)}%`;
 }
 
-// 점수에 따른 색상 반환
+// 점수에 따른 색상 반환 (5점 만점 기준)
 export function getScoreColor(score: number): string {
-  if (score >= 8) return 'text-green-600';
-  if (score >= 6) return 'text-yellow-600';
-  if (score >= 4) return 'text-orange-600';
+  if (score >= 4) return 'text-green-600';
+  if (score >= 3) return 'text-yellow-600';
+  if (score >= 2) return 'text-orange-600';
   return 'text-red-600';
 }
 
-// 점수에 따른 배경색 반환
+// 점수에 따른 배경색 반환 (5점 만점 기준)
 export function getScoreBgColor(score: number): string {
-  if (score >= 8) return 'bg-green-100';
-  if (score >= 6) return 'bg-yellow-100';
-  if (score >= 4) return 'bg-orange-100';
+  if (score >= 4) return 'bg-green-100';
+  if (score >= 3) return 'bg-yellow-100';
+  if (score >= 2) return 'bg-orange-100';
   return 'bg-red-100';
 }
 
-// 총점에 따른 등급 반환
+// 총점에 따른 등급 반환 (5점 만점 기준)
 export function getGrade(totalScore: number): string {
-  if (totalScore >= 9) return 'S';
-  if (totalScore >= 8) return 'A';
-  if (totalScore >= 7) return 'B';
-  if (totalScore >= 6) return 'C';
-  if (totalScore >= 5) return 'D';
+  if (totalScore >= 4.5) return 'S';
+  if (totalScore >= 4) return 'A';
+  if (totalScore >= 3.5) return 'B';
+  if (totalScore >= 3) return 'C';
+  if (totalScore >= 2.5) return 'D';
   return 'F';
 }
 

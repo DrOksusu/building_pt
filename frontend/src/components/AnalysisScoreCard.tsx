@@ -27,8 +27,8 @@ function ScoreItem({ label, score, note }: ScoreItemProps) {
       <div className="flex items-center gap-2">
         <div className="w-24 bg-gray-200 rounded-full h-2">
           <div
-            className={`h-2 rounded-full ${score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : score >= 4 ? 'bg-orange-500' : 'bg-red-500'}`}
-            style={{ width: `${score * 10}%` }}
+            className={`h-2 rounded-full ${score >= 4 ? 'bg-green-500' : score >= 3 ? 'bg-yellow-500' : score >= 2 ? 'bg-orange-500' : 'bg-red-500'}`}
+            style={{ width: `${score * 20}%` }}
           />
         </div>
         <span className={`font-semibold w-8 text-right ${getScoreColor(score)}`}>
